@@ -5,13 +5,7 @@ require('dotenv').config();
 
 const client = new Discord.Client({ intents: ["GUILDS"] });
 
-//******************* REPLACE THESE VARIABLES *********************/
-const TOKEN_CURRENCY_NAME = 'Fractal'; //Name of currency
-const TOKEN_CURRENCY = '4672616374616C00000000000000000000000000'; //40 character 160 bit hex currency code
-const TOKEN_ISSUER = 'rw9oZfkjNkaarwpyrTLjfHzfnUuoGFY8V8'; //Token Issuer
-//const AVATAR_URL = 'https://secure.gravatar.com/avatar/cdee4d5018167873d2b108d9600627b6?d=mm&s=173'; //Avatar URL
-const UPDATE_FREQUENCY = 240; //Update Frequency in seconds
-//*************************************************************** */
+const c = require('./constants');
 
 var token = {
   Bid: 0,
@@ -23,8 +17,8 @@ var token = {
             const reqAsk = {
                 "command": "book_offers",
                 "taker_gets": {
-                "currency": TOKEN_CURRENCY,
-                "issuer": TOKEN_ISSUER
+                "currency": c.TOKEN_CURRENCY,
+                "issuer": c.TOKEN_ISSUER
                 },
                 "taker_pays": {
                 "currency": "XRP"
@@ -38,8 +32,8 @@ var token = {
                     "currency": "XRP"
                 },
                 "taker_pays": {
-                "currency": TOKEN_CURRENCY,
-                "issuer": TOKEN_ISSUER
+                "currency": c.TOKEN_CURRENCY,
+                "issuer": c.TOKEN_ISSUER
                 },
                 "limit": 1
             }
@@ -64,16 +58,16 @@ const priceUpdate = async () => {
   token.UpdatePrice()
   const server = await client.guilds.fetch(process.env.DISCORD_SERVER_ID)
   const bot = await server.members.fetch(client.user.id)
-  bot.setNickname(TOKEN_CURRENCY_NAME + ` PRICE TRACKER`)
+  bot.setNickname(c.TOKEN_CURRENCY_NAME + ` PRICE TRACKER`)
   client.user.setActivity(`Bid: ${token.Bid}  Ask: ${token.Ask}`);
 }
 
 client.on('ready', () => {
   console.log(`${client.user.tag} has logged in!`)
-  //client.user.setAvatar(AVATAR_URL)
+  //client.user.setAvatar(c.AVATAR_URL)
   myinterval = setInterval(function(){
     priceUpdate()
-  }, UPDATE_FREQUENCY * 1000)
+  }, c.UPDATE_FREQUENCY * 1000)
 })
 
 client.login(process.env.DISCORD_BOT_TOKEN)
