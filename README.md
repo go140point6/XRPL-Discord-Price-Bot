@@ -1,7 +1,5 @@
-# Yet Another Price Bot (YAPpy) 
+# Yet Another Price Bot (YAPpy) <img src="dog-g65b0a97e7_640.png" width="75"> 
 Simple XRPL Dex price bot for discord
-
-<img src="dog-g65b0a97e7_640.png" width="50">
 
 To Run Script:
 
