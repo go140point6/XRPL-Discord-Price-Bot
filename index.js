@@ -86,7 +86,7 @@ client.on('messageCreate', (message) => {
       .setDescription('YAPpy knows these tricks: ')
       .addFields(
         { name: "`!help`", value: 'Shows YAPpy\'s tricks' },
-        { name: "`!fetch`", value: 'Has YAPpy retrive current token prices' },
+        { name: "`!fetch`", value: 'Has YAPpy retrieve current token prices' },
       )
     message.channel.send({embeds: [helpEmbed]})
   }
@@ -94,7 +94,7 @@ client.on('messageCreate', (message) => {
   if (message.content == '!fetch') {
     const fetchEmbed = new MessageEmbed()
       .setColor('#ffd046')
-      .setTitle('Current Bid and Ask')
+      .setTitle('Current Ask and Bid')
       .addFields(
         { name: "`Ask:`", value: `${token.Ask}` },
         { name: "`Bid:`", value: `${token.Bid}` },
