@@ -1,9 +1,13 @@
-const Discord = require('discord.js');
+const {
+  Client,
+  Intents,
+  MessageEmbed
+}  = require('discord.js');
 const xrpl = require('xrpl');
 
 require('dotenv').config();
 
-const client = new Discord.Client({ intents: ["GUILDS"] });
+const client = new Client ({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES] });
 
 const c = require('./constants');
 
@@ -58,7 +62,7 @@ const priceUpdate = async () => {
   token.UpdatePrice()
   const server = await client.guilds.fetch(process.env.DISCORD_SERVER_ID)
   const bot = await server.members.fetch(client.user.id)
-  bot.setNickname(c.TOKEN_CURRENCY_NAME + ` PRICE TRACKER`)
+  bot.setNickname(`YAPpy ` + (c.TOKEN_CURRENCY_NAME))
   client.user.setActivity(`Bid: ${token.Bid}  Ask: ${token.Ask}`);
 }
 
@@ -68,6 +72,35 @@ client.on('ready', () => {
   myinterval = setInterval(function(){
     priceUpdate()
   }, c.UPDATE_FREQUENCY * 1000)
+})
+
+client.on('messageCreate', (message) => {
+  if(message.content.toLowerCase().includes('good boy')){
+    message.channel.send('woof woof!');
+  }
+
+  if (message.content == '!help') {
+    const helpEmbed = new MessageEmbed()
+      .setColor('#ffd046')
+      .setTitle('YAPpy\'s Commands')
+      .setDescription('YAPpy knows these tricks: ')
+      .addFields(
+        { name: "`!help`", value: 'Shows YAPpy\'s tricks' },
+        { name: "`!fetch`", value: 'Has YAPpy retrive current token prices' },
+      )
+    message.channel.send({embeds: [helpEmbed]})
+  }
+
+  if (message.content == '!fetch') {
+    const fetchEmbed = new MessageEmbed()
+      .setColor('#ffd046')
+      .setTitle('Current Bid and Ask')
+      .addFields(
+        { name: "`Ask:`", value: `${token.Ask}` },
+        { name: "`Bid:`", value: `${token.Bid}` },
+      )
+    message.channel.send({embeds: [fetchEmbed]})
+  }
 })
 
 client.login(process.env.DISCORD_BOT_TOKEN)
